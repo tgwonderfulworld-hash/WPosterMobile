@@ -1,9 +1,78 @@
-:root {
-  --font-display:
-    Spline Sans, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji,
-    Segoe UI Symbol, Noto Color Emoji;
-  --font-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
-  --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
-  --font-serif: Georgia, 'Times New Roman', serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * CSS-side theme (NativeWind). Values are RGB channels ("R G B") so Tailwind can
+ * apply opacity via `rgb(var(--x) / <alpha-value>)`. This is the CSS mirror of
+ * `src/theme/tokens.ts` — both are "the theme"; keep them in sync. Dark mode is
+ * driven by the `dark` class (set from the theme store) and the OS preference.
+ */
+@layer base {
+  :root {
+    --font-display:
+      Spline Sans, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji,
+      Segoe UI Symbol, Noto Color Emoji;
+    --font-mono:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
+    --font-serif: Georgia, 'Times New Roman', serif;
+
+    --color-primary: 47 107 246;
+    --color-primary-hover: 37 89 216;
+    --color-primary-pressed: 30 73 184;
+    --color-primary-foreground: 255 255 255;
+    --color-primary-subtle: 234 240 254;
+    --color-accent: 124 58 237;
+    --color-accent-subtle: 241 234 254;
+
+    --color-background: 255 255 255;
+    --color-surface: 245 247 250;
+    --color-card: 255 255 255;
+    --color-border: 228 231 236;
+    --color-border-strong: 208 213 221;
+    --color-foreground: 16 24 40;
+    --color-muted: 71 84 103;
+    --color-subtle: 152 162 179;
+    --color-inverse: 255 255 255;
+
+    --color-success: 22 163 74;
+    --color-success-subtle: 231 246 236;
+    --color-warning: 217 119 6;
+    --color-warning-subtle: 253 241 227;
+    --color-danger: 220 38 38;
+    --color-danger-subtle: 253 236 236;
+    --color-info: 47 107 246;
+    --color-info-subtle: 234 240 254;
+  }
+
+  .dark:root,
+  :root.dark {
+    --color-primary: 79 125 243;
+    --color-primary-hover: 107 147 246;
+    --color-primary-pressed: 62 104 216;
+    --color-primary-foreground: 255 255 255;
+    --color-primary-subtle: 23 33 58;
+    --color-accent: 155 107 240;
+    --color-accent-subtle: 36 27 58;
+
+    --color-background: 11 14 20;
+    --color-surface: 18 21 29;
+    --color-card: 23 26 34;
+    --color-border: 38 42 52;
+    --color-border-strong: 54 59 71;
+    --color-foreground: 242 244 247;
+    --color-muted: 152 162 179;
+    --color-subtle: 102 112 133;
+    --color-inverse: 11 14 20;
+
+    --color-success: 52 211 153;
+    --color-success-subtle: 18 39 30;
+    --color-warning: 251 191 36;
+    --color-warning-subtle: 42 34 19;
+    --color-danger: 248 113 113;
+    --color-danger-subtle: 44 23 23;
+    --color-info: 96 165 250;
+    --color-info-subtle: 20 36 58;
+  }
 }

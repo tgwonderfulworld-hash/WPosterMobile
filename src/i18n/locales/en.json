@@ -1,0 +1,121 @@
+{
+  "common": {
+    "appName": "WPoster",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "retry": "Try again",
+    "continue": "Continue",
+    "back": "Back",
+    "loading": "Loading…",
+    "search": "Search",
+    "email": "Email",
+    "password": "Password"
+  },
+  "offline": {
+    "banner": "No internet connection",
+    "restored": "Back online"
+  },
+  "errors": {
+    "network": "No internet connection. Check your network and try again.",
+    "timeout": "The request took too long. Please try again.",
+    "unauthorized": "Your session has expired. Please sign in again.",
+    "forbidden": "You don't have permission to do that.",
+    "notFound": "We couldn't find what you were looking for.",
+    "validation": "Please check the details and try again.",
+    "rateLimited": "Too many attempts. Please wait a moment and try again.",
+    "server": "Something went wrong on our side. Please try again shortly.",
+    "unknown": "Something went wrong. Please try again.",
+    "auth": {
+      "invalidCredentials": "Incorrect email or password.",
+      "emailNotConfirmed": "Please verify your email before signing in.",
+      "emailTaken": "An account with this email already exists.",
+      "weakPassword": "Please choose a stronger password."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid email address",
+    "min": "Must be at least {{count}} characters",
+    "max": "Must be at most {{count}} characters",
+    "passwordMin": "Password must be at least 8 characters",
+    "passwordComplexity": "Include upper- and lower-case letters and a number",
+    "passwordsMismatch": "Passwords don't match",
+    "agreementRequired": "Please accept the terms to continue"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your WPoster account",
+      "emailPlaceholder": "you@example.com",
+      "passwordPlaceholder": "Your password",
+      "rememberMe": "Remember me",
+      "forgot": "Forgot password?",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Start managing all your channels in one place",
+      "namePlaceholder": "Your name",
+      "confirmPlaceholder": "Confirm password",
+      "agreement": "I agree to the Terms of Service and Privacy Policy",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "success": "Account created. Check your inbox to verify your email."
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email and we'll send you a reset link",
+      "submit": "Send reset link",
+      "sent": "If that email exists, a reset link is on its way.",
+      "backToLogin": "Back to sign in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "subtitle": "Choose a new password for your account",
+      "submit": "Update password",
+      "success": "Your password has been updated."
+    },
+    "verify": {
+      "title": "Verify your email",
+      "subtitle": "We sent a verification link to {{email}}. Tap it to activate your account.",
+      "resend": "Resend email",
+      "resent": "Verification email sent.",
+      "openMail": "Open mail app",
+      "backToLogin": "Back to sign in"
+    },
+    "session": {
+      "loading": "Preparing your workspace…"
+    }
+  },
+  "tabs": {
+    "dashboard": "Dashboard",
+    "calendar": "Calendar",
+    "analytics": "Analytics",
+    "profile": "Profile"
+  },
+  "screens": {
+    "dashboard": { "title": "Dashboard", "empty": "Your dashboard is coming together." },
+    "calendar": { "title": "Calendar", "empty": "No scheduled posts yet." },
+    "analytics": { "title": "Analytics", "empty": "Analytics will appear here." },
+    "profile": { "title": "Profile" },
+    "settings": {
+      "title": "Settings",
+      "appearance": "Appearance",
+      "language": "Language",
+      "notifications": "Notifications",
+      "theme": { "system": "System", "light": "Light", "dark": "Dark" },
+      "signOut": "Sign out"
+    }
+  },
+  "states": {
+    "emptyTitle": "Nothing here yet",
+    "emptyBody": "When there's something to show, it'll appear here.",
+    "errorTitle": "Something went wrong",
+    "errorBody": "We couldn't load this. Please try again."
+  }
+}
