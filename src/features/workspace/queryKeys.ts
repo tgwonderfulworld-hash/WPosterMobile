@@ -6,4 +6,7 @@ export const workspaceKeys = {
   connectedAccounts: (workspaceId: string) => ['connectedAccounts', workspaceId] as const,
   stats: (workspaceId: string) => ['dashboardStats', workspaceId] as const,
   upcoming: (workspaceId: string) => ['upcomingPosts', workspaceId] as const,
+  failedPosts: (workspaceId: string) => ['failedPosts', workspaceId] as const,
+  queueCounts: (workspaceId: string) => ['queueCounts', workspaceId] as const,
+  notifications: (workspaceId: string) => ['notifications', workspaceId] as const,
 };

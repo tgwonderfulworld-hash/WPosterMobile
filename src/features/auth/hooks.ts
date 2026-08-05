@@ -25,7 +25,8 @@ function notifyError(error: unknown): void {
 
 export function useLogin() {
   return useMutation({
-    mutationFn: (values: LoginValues) => authApi.signIn(values.email, values.password),
+    mutationFn: (values: LoginValues & { captchaToken: string }) =>
+      authApi.signIn(values.email, values.password, values.captchaToken),
     onError: (error) => {
       if (error instanceof AppError && error.messageKey === 'errors.auth.emailNotConfirmed') {
         router.push('/verify-email');
@@ -37,8 +38,8 @@ export function useLogin() {
 
 export function useRegister() {
   return useMutation({
-    mutationFn: (values: RegisterValues) =>
-      authApi.signUp(values.name, values.email, values.password),
+    mutationFn: (values: RegisterValues & { captchaToken: string }) =>
+      authApi.signUp(values.name, values.email, values.password, values.captchaToken),
     onSuccess: (data, variables) => {
       // With email confirmation enabled, there's no session yet — send the user
       // to the verify-email screen. Otherwise the guard will route to the app.
@@ -53,7 +54,8 @@ export function useRegister() {
 
 export function useForgotPassword() {
   return useMutation({
-    mutationFn: (values: ForgotPasswordValues) => authApi.sendPasswordReset(values.email),
+    mutationFn: (values: ForgotPasswordValues & { captchaToken: string }) =>
+      authApi.sendPasswordReset(values.email, values.captchaToken),
     onSuccess: () => toast.success('mobile.notices.resetLinkSent'),
     onError: notifyError,
   });

@@ -4,6 +4,7 @@ import GorhomBottomSheet, {
   type BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import { useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { useTheme } from '@/theme';
 
@@ -30,9 +31,18 @@ export function BottomSheet({ visible, onClose, children, snapPoints }: BottomSh
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} pressBehavior="close" />
+      // Gorhom's own backdrop resets its pointerEvents via a Reanimated reaction
+      // tied to the sheet's animated index — which can get interrupted (e.g. a
+      // locale change re-rendering the tree in the same tick as picking a
+      // language and closing the sheet), leaving a full-screen invisible view
+      // that still intercepts every touch on the screen behind it. Driving
+      // pointerEvents from our own plain `visible` state instead is immune to
+      // that timing and always correct.
+      <View pointerEvents={visible ? 'auto' : 'none'} style={StyleSheet.absoluteFill}>
+        <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} pressBehavior="close" />
+      </View>
     ),
-    [],
+    [visible],
   );
 
   const handleChange = useCallback(

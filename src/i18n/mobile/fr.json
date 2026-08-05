@@ -39,6 +39,11 @@
     "passwordUpdated": "Ton mot de passe a été mis à jour."
   },
   "workspaceSwitcher": { "title": "Changer d'espace", "empty": "Aucun espace de travail" },
+  "dashboard": {
+    "queuedCount": "{count, plural, one {# publication en file d'attente} other {# publications en file d'attente}}",
+    "retryUnavailable": "La relance des publications échouées n'est pas encore disponible dans l'application. Utilise WPoster sur le web.",
+    "editUnavailable": "La modification des publications n'est pas encore disponible dans l'application. Utilise WPoster sur le web."
+  },
   "language": { "title": "Langue" },
   "common": { "retry": "Réessayer", "loading": "Chargement…" }
 }

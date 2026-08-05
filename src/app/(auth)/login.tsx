@@ -1,10 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Pressable, View } from 'react-native';
 
 import { Button, Checkbox, Input, PasswordInput, Text } from '@/components/ui';
-import { AuthFooterLink, AuthScreenLayout, loginSchema, useLogin, type LoginValues } from '@/features/auth';
+import {
+  AuthFooterLink,
+  AuthScreenLayout,
+  loginSchema,
+  TurnstileCaptcha,
+  useLogin,
+  type LoginValues,
+} from '@/features/auth';
 import { useTranslations } from '@/i18n';
 import { useTheme } from '@/theme';
 
@@ -12,6 +20,7 @@ export default function LoginScreen() {
   const t = useTranslations();
   const theme = useTheme();
   const login = useLogin();
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const {
     control,
@@ -22,7 +31,10 @@ export default function LoginScreen() {
     defaultValues: { email: '', password: '', remember: true },
   });
 
-  const onSubmit = handleSubmit((values) => login.mutate(values));
+  const onSubmit = handleSubmit((values) => {
+    if (!captchaToken) return;
+    login.mutate({ ...values, captchaToken });
+  });
 
   return (
     <AuthScreenLayout
@@ -83,10 +95,13 @@ export default function LoginScreen() {
         </Pressable>
       </View>
 
+      <TurnstileCaptcha onToken={setCaptchaToken} />
+
       <Button
         label={login.isPending ? t('auth.login.submittingButton') : t('auth.login.submitButton')}
         onPress={onSubmit}
         loading={login.isPending}
+        disabled={!captchaToken}
         fullWidth
         style={{ marginTop: 4 }}
       />

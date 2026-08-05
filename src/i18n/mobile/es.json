@@ -39,6 +39,11 @@
     "passwordUpdated": "Tu contraseña se ha actualizado."
   },
   "workspaceSwitcher": { "title": "Cambiar de espacio", "empty": "Aún no hay espacios de trabajo" },
+  "dashboard": {
+    "queuedCount": "{count, plural, one {# publicación en cola} other {# publicaciones en cola}}",
+    "retryUnavailable": "Reintentar publicaciones fallidas aún no está disponible en la app. Usa WPoster en la web.",
+    "editUnavailable": "Editar publicaciones aún no está disponible en la app. Usa WPoster en la web."
+  },
   "language": { "title": "Idioma" },
   "common": { "retry": "Reintentar", "loading": "Cargando…" }
 }

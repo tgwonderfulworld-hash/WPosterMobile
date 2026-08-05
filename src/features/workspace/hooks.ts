@@ -9,9 +9,12 @@ import { useMutation, useQuery, useQueryClient, type QueryClient } from '@tansta
 import { useAuthStore } from '@/store';
 
 import {
+  getConnectedAccountQueueCounts,
   getConnectedAccounts,
+  getFailedPosts,
   getUpcomingPosts,
   getUserProfile,
+  getWorkspaceNotifications,
   getWorkspaceStats,
   listWorkspaces,
   resolveActiveWorkspaceId,
@@ -75,8 +78,33 @@ export function useUpcomingPosts(workspaceId: string | undefined, limit = 5) {
   });
 }
 
+export function useFailedPosts(workspaceId: string | undefined, limit = 5) {
+  return useQuery({
+    queryKey: workspaceKeys.failedPosts(workspaceId ?? 'none'),
+    queryFn: () => getFailedPosts(workspaceId!, limit),
+    enabled: !!workspaceId,
+  });
+}
+
+export function useConnectedAccountQueueCounts(workspaceId: string | undefined) {
+  return useQuery({
+    queryKey: workspaceKeys.queueCounts(workspaceId ?? 'none'),
+    queryFn: () => getConnectedAccountQueueCounts(workspaceId!),
+    enabled: !!workspaceId,
+  });
+}
+
+export function useWorkspaceNotifications(workspaceId: string | undefined) {
+  const userId = useUserId();
+  return useQuery({
+    queryKey: workspaceKeys.notifications(workspaceId ?? 'none'),
+    queryFn: () => getWorkspaceNotifications(workspaceId!, userId!),
+    enabled: !!workspaceId && !!userId,
+  });
+}
+
 /** Warm the dashboard caches for a workspace (used on switch / focus). */
-export function prefetchWorkspaceData(client: QueryClient, workspaceId: string): void {
+export function prefetchWorkspaceData(client: QueryClient, workspaceId: string, userId?: string): void {
   void client.prefetchQuery({
     queryKey: workspaceKeys.connectedAccounts(workspaceId),
     queryFn: () => getConnectedAccounts(workspaceId),
@@ -89,6 +117,20 @@ export function prefetchWorkspaceData(client: QueryClient, workspaceId: string):
     queryKey: workspaceKeys.upcoming(workspaceId),
     queryFn: () => getUpcomingPosts(workspaceId),
   });
+  void client.prefetchQuery({
+    queryKey: workspaceKeys.failedPosts(workspaceId),
+    queryFn: () => getFailedPosts(workspaceId),
+  });
+  void client.prefetchQuery({
+    queryKey: workspaceKeys.queueCounts(workspaceId),
+    queryFn: () => getConnectedAccountQueueCounts(workspaceId),
+  });
+  if (userId) {
+    void client.prefetchQuery({
+      queryKey: workspaceKeys.notifications(workspaceId),
+      queryFn: () => getWorkspaceNotifications(workspaceId, userId),
+    });
+  }
 }
 
 export function useSwitchWorkspace() {
@@ -104,7 +146,7 @@ export function useSwitchWorkspace() {
       const previous = client.getQueryData<string | null>(key);
       // Optimistically flip the active workspace so dependent screens switch now.
       client.setQueryData(key, workspaceId);
-      prefetchWorkspaceData(client, workspaceId);
+      prefetchWorkspaceData(client, workspaceId, userId);
       return { previous, key };
     },
     onError: (_err, _wsId, ctx) => {

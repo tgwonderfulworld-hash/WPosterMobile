@@ -39,6 +39,11 @@
     "passwordUpdated": "Your password has been updated."
   },
   "workspaceSwitcher": { "title": "Switch workspace", "empty": "No workspaces yet" },
+  "dashboard": {
+    "queuedCount": "{count, plural, one {# post in queue} other {# posts in queue}}",
+    "retryUnavailable": "Retrying failed posts isn't available in the app yet. Please use WPoster on the web.",
+    "editUnavailable": "Editing posts isn't available in the app yet. Please use WPoster on the web."
+  },
   "language": { "title": "Language" },
   "common": { "retry": "Try again", "loading": "Loading…" }
 }

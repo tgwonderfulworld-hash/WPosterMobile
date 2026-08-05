@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Alert, Button, Input } from '@/components/ui';
@@ -7,6 +8,7 @@ import {
   AuthFooterLink,
   AuthScreenLayout,
   forgotPasswordSchema,
+  TurnstileCaptcha,
   useForgotPassword,
   type ForgotPasswordValues,
 } from '@/features/auth';
@@ -15,6 +17,7 @@ import { useTranslations } from '@/i18n';
 export default function ForgotPasswordScreen() {
   const t = useTranslations();
   const forgot = useForgotPassword();
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const {
     control,
@@ -25,7 +28,10 @@ export default function ForgotPasswordScreen() {
     defaultValues: { email: '' },
   });
 
-  const onSubmit = handleSubmit((values) => forgot.mutate(values));
+  const onSubmit = handleSubmit((values) => {
+    if (!captchaToken) return;
+    forgot.mutate({ ...values, captchaToken });
+  });
 
   return (
     <AuthScreenLayout
@@ -59,10 +65,13 @@ export default function ForgotPasswordScreen() {
         )}
       />
 
+      <TurnstileCaptcha onToken={setCaptchaToken} />
+
       <Button
         label={forgot.isPending ? t('auth.forgotPassword.submittingButton') : t('auth.forgotPassword.submitButton')}
         onPress={onSubmit}
         loading={forgot.isPending}
+        disabled={!captchaToken}
         fullWidth
         style={{ marginTop: 4 }}
       />

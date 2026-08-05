@@ -14,28 +14,38 @@ function redirectTo(path: string): string {
 }
 
 export const authApi = {
-  async signIn(email: string, password: string) {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  // captchaToken is required — Supabase Auth on this project has captcha
+  // protection enabled for signIn/signUp/resetPassword (same as Web, which
+  // supplies it via Cloudflare Turnstile); omitting it fails every call with
+  // error.code === 'captcha_failed'.
+  async signIn(email: string, password: string, captchaToken: string) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+      options: { captchaToken },
+    });
     if (error) throw toAppError(error);
     return data;
   },
 
-  async signUp(name: string, email: string, password: string) {
+  async signUp(name: string, email: string, password: string, captchaToken: string) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { full_name: name },
         emailRedirectTo: redirectTo('/verify-email'),
+        captchaToken,
       },
     });
     if (error) throw toAppError(error);
     return data;
   },
 
-  async sendPasswordReset(email: string) {
+  async sendPasswordReset(email: string, captchaToken: string) {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: redirectTo('/reset-password'),
+      captchaToken,
     });
     if (error) throw toAppError(error);
   },

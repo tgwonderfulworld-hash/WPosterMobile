@@ -4,6 +4,7 @@
  */
 const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
 const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
+const TURNSTILE_SITE_KEY = process.env.EXPO_PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   // Surface misconfiguration loudly in development; in production the auth layer
@@ -25,6 +26,9 @@ export const config = {
   supabaseUrl: SUPABASE_URL,
   supabaseAnonKey: SUPABASE_ANON_KEY,
   apiBaseUrl: API_BASE_URL,
+  /** Cloudflare Turnstile site key — same one WPoster Web uses. Required by
+   * Supabase Auth's captcha protection on signIn/signUp/resetPassword. */
+  turnstileSiteKey: TURNSTILE_SITE_KEY,
   /** Default request timeout (ms) for the REST/Axios layer. */
   requestTimeoutMs: 20_000,
 } as const;

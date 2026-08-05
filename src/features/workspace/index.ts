@@ -7,6 +7,9 @@ export {
   useConnectedAccounts,
   useWorkspaceStats,
   useUpcomingPosts,
+  useFailedPosts,
+  useConnectedAccountQueueCounts,
+  useWorkspaceNotifications,
   useSwitchWorkspace,
   prefetchWorkspaceData,
 } from './hooks';

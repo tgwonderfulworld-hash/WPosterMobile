@@ -24,14 +24,9 @@ import { useTranslations } from '@/i18n';
 import { toAppError } from '@/utils/errors';
 import { useTheme } from '@/theme';
 
-function isConnected(status: string): boolean {
-  const s = status.toLowerCase();
-  return s === 'active' || s === 'connected' || s === 'ok';
-}
-
 function AccountRow({ account }: { account: ConnectedAccount }) {
   const t = useTranslations();
-  const connected = isConnected(account.status);
+  const connected = account.status === 'connected';
   const title = account.display_name || account.handle || getPlatformLabel(account.platform);
 
   return (

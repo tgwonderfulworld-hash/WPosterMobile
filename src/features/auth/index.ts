@@ -11,3 +11,4 @@ export {
 export { initAuthSession, useAuthBootstrap } from './session';
 export { AuthScreenLayout } from './components/AuthScreenLayout';
 export { AuthFooterLink } from './components/AuthFooterLink';
+export { TurnstileCaptcha } from './components/TurnstileCaptcha';

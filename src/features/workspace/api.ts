@@ -8,7 +8,15 @@
 import { supabase } from '@/services/supabase';
 import { normalizePlatformId } from '@/lib/platforms/registry';
 
-import type { ConnectedAccount, Post, UserProfile, Workspace, WorkspaceStats } from './types';
+import type {
+  ConnectedAccount,
+  Post,
+  QueueCountsByAccount,
+  UserProfile,
+  Workspace,
+  WorkspaceNotification,
+  WorkspaceStats,
+} from './types';
 
 /**
  * Resolve the user's active workspace — port of Web's `getDefaultWorkspaceForUser`
@@ -122,56 +130,68 @@ async function countPosts(workspaceId: string, status?: string): Promise<number>
   return count ?? 0;
 }
 
-function startOfToday(): string {
+async function countPostsCreatedSince(workspaceId: string, sinceIso: string): Promise<number> {
+  const { count } = await supabase
+    .from('posts')
+    .select('id', { count: 'exact', head: true })
+    .eq('workspace_id', workspaceId)
+    .gte('created_at', sinceIso);
+  return count ?? 0;
+}
+
+function startOfToday(): Date {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
-  return d.toISOString();
+  return d;
 }
-function endOfToday(): string {
-  const d = new Date();
-  d.setHours(23, 59, 59, 999);
-  return d.toISOString();
+function startOfMonth(): Date {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+}
+function daysAgo(n: number): Date {
+  return new Date(Date.now() - n * 24 * 60 * 60 * 1000);
 }
 
-/** Dashboard KPI counts — same count queries Web uses (settings-queries.ts style). */
+/**
+ * Dashboard KPI counts. `scheduled`/`published`/`draft`/`failed` mirror Web's
+ * `getDashboardV2Data` (src/lib/analytics/dashboard-queries.ts) exactly — same
+ * table, same `publish_status` filter, same all-time count. `postsToday`/
+ * `postsThisWeek`/`postsThisMonth` extend Web's own time-windowed-count pattern
+ * (Web only has `draftsToday`/`publishedThisWeek`, no "this month") to count ALL
+ * posts by `created_at`, using the identical `head:true, count:'exact'` shape.
+ */
 export async function getWorkspaceStats(workspaceId: string): Promise<WorkspaceStats> {
-  const [connectedAccounts, scheduled, draft, published, failed, todayCount] = await Promise.all([
-    (async () => {
-      const { count } = await supabase
-        .from('connected_accounts')
-        .select('id', { count: 'exact', head: true })
-        .eq('workspace_id', workspaceId);
-      return count ?? 0;
-    })(),
-    countPosts(workspaceId, 'scheduled'),
-    countPosts(workspaceId, 'draft'),
-    countPosts(workspaceId, 'published'),
-    countPosts(workspaceId, 'failed'),
-    (async () => {
-      const { count } = await supabase
-        .from('posts')
-        .select('id', { count: 'exact', head: true })
-        .eq('workspace_id', workspaceId)
-        .eq('publish_status', 'scheduled')
-        .gte('scheduled_at', startOfToday())
-        .lte('scheduled_at', endOfToday());
-      return count ?? 0;
-    })(),
-  ]);
+  const [scheduled, published, draft, failed, postsToday, postsThisWeek, postsThisMonth] =
+    await Promise.all([
+      countPosts(workspaceId, 'scheduled'),
+      countPosts(workspaceId, 'published'),
+      countPosts(workspaceId, 'draft'),
+      countPosts(workspaceId, 'failed'),
+      countPostsCreatedSince(workspaceId, startOfToday().toISOString()),
+      countPostsCreatedSince(workspaceId, daysAgo(7).toISOString()),
+      countPostsCreatedSince(workspaceId, startOfMonth().toISOString()),
+    ]);
 
-  return { connectedAccounts, scheduled, draft, published, failed, today: todayCount };
+  return { scheduled, published, draft, failed, postsToday, postsThisWeek, postsThisMonth };
 }
 
-interface RawUpcomingPost {
+interface RawPostRow {
   id: string;
   title: string | null;
   publish_status: Post['publish_status'];
   scheduled_at: string | null;
   published_at: string | null;
+  updated_at: string;
+  cover_image_url: string | null;
+  image_urls: string[] | null;
+  publish_error: string | null;
   post_connected_accounts?: { connected_accounts?: { platform: string | null } | null }[] | null;
 }
 
-function derivePostPlatforms(row: RawUpcomingPost): string[] {
+const POST_ROW_SELECT =
+  'id,title,publish_status,scheduled_at,published_at,updated_at,cover_image_url,image_urls,publish_error,post_connected_accounts(connected_accounts(platform))';
+
+function derivePostPlatforms(row: RawPostRow): string[] {
   const set = new Set<string>();
   for (const link of row.post_connected_accounts ?? []) {
     const slug = normalizePlatformId(link.connected_accounts?.platform ?? null);
@@ -180,27 +200,118 @@ function derivePostPlatforms(row: RawUpcomingPost): string[] {
   return Array.from(set);
 }
 
-/** Upcoming scheduled posts (soonest first) with their target platforms. */
-export async function getUpcomingPosts(workspaceId: string, limit = 5): Promise<Post[]> {
-  const nowIso = new Date().toISOString();
-  const { data } = await supabase
-    .from('posts')
-    .select(
-      'id,title,publish_status,scheduled_at,published_at,post_connected_accounts(connected_accounts(platform))',
-    )
-    .eq('workspace_id', workspaceId)
-    .eq('publish_status', 'scheduled')
-    .gte('scheduled_at', nowIso)
-    .order('scheduled_at', { ascending: true })
-    .limit(limit)
-    .returns<RawUpcomingPost[]>();
-
-  return (data ?? []).map((row) => ({
+function mapPostRow(row: RawPostRow): Post {
+  return {
     id: row.id,
     title: row.title,
     publish_status: row.publish_status,
     scheduled_at: row.scheduled_at,
     published_at: row.published_at,
+    updated_at: row.updated_at,
+    cover_image_url: row.cover_image_url ?? row.image_urls?.[0] ?? null,
+    publish_error: row.publish_error,
     platforms: derivePostPlatforms(row),
-  }));
+  };
+}
+
+/** Upcoming scheduled posts (soonest first) with their target platforms. */
+export async function getUpcomingPosts(workspaceId: string, limit = 5): Promise<Post[]> {
+  const nowIso = new Date().toISOString();
+  const { data } = await supabase
+    .from('posts')
+    .select(POST_ROW_SELECT)
+    .eq('workspace_id', workspaceId)
+    .eq('publish_status', 'scheduled')
+    .gte('scheduled_at', nowIso)
+    .order('scheduled_at', { ascending: true })
+    .limit(limit)
+    .returns<RawPostRow[]>();
+
+  return (data ?? []).map(mapPostRow);
+}
+
+/** Posts that failed to publish (most recent first), with their failure reason. */
+export async function getFailedPosts(workspaceId: string, limit = 5): Promise<Post[]> {
+  const { data } = await supabase
+    .from('posts')
+    .select(POST_ROW_SELECT)
+    .eq('workspace_id', workspaceId)
+    .eq('publish_status', 'failed')
+    .order('updated_at', { ascending: false })
+    .limit(limit)
+    .returns<RawPostRow[]>();
+
+  return (data ?? []).map(mapPostRow);
+}
+
+/**
+ * Pending/processing publication counts per connected account. There is no
+ * queue-count column on `connected_accounts` itself — this is a real,
+ * non-invented aggregate over `post_connected_account_publications` (the same
+ * table Web's `retryPublication` reads/writes), computed client-side since a
+ * single small `IN`-filtered select is simpler than a Postgres view here.
+ */
+export async function getConnectedAccountQueueCounts(workspaceId: string): Promise<QueueCountsByAccount> {
+  const { data } = await supabase
+    .from('post_connected_account_publications')
+    .select('connected_account_id')
+    .eq('workspace_id', workspaceId)
+    .in('status', ['pending', 'processing'])
+    .returns<{ connected_account_id: string }[]>();
+
+  const counts: QueueCountsByAccount = {};
+  for (const row of data ?? []) {
+    counts[row.connected_account_id] = (counts[row.connected_account_id] ?? 0) + 1;
+  }
+  return counts;
+}
+
+interface RawNotificationRow {
+  id: string;
+  type: string;
+  level: WorkspaceNotification['level'];
+  title: string;
+  body: string;
+  link_href: string | null;
+  created_at: string;
+}
+
+/**
+ * Recent workspace notifications (Web `workspace_notifications` /
+ * `workspace_notification_reads` — Notification Center). RLS
+ * (`workspace_notifications_select_members`) already scopes rows to workspace
+ * members and `user_id is null or user_id = auth.uid()`; dismissed rows are
+ * filtered out client-side via the per-user reads join, same as Web.
+ */
+export async function getWorkspaceNotifications(
+  workspaceId: string,
+  userId: string,
+  limit = 10,
+): Promise<WorkspaceNotification[]> {
+  const { data: rows } = await supabase
+    .from('workspace_notifications')
+    .select('id,type,level,title,body,link_href,created_at')
+    .eq('workspace_id', workspaceId)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+    .returns<RawNotificationRow[]>();
+
+  const list = rows ?? [];
+  if (list.length === 0) return [];
+
+  const { data: reads } = await supabase
+    .from('workspace_notification_reads')
+    .select('notification_id,read_at,dismissed_at')
+    .eq('user_id', userId)
+    .in(
+      'notification_id',
+      list.map((r) => r.id),
+    )
+    .returns<{ notification_id: string; read_at: string | null; dismissed_at: string | null }[]>();
+
+  const readById = new Map((reads ?? []).map((r) => [r.notification_id, r]));
+
+  return list
+    .filter((row) => !readById.get(row.id)?.dismissed_at)
+    .map((row) => ({ ...row, isRead: Boolean(readById.get(row.id)?.read_at) }));
 }

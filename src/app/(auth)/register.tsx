@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Button, Checkbox, Input, PasswordInput } from '@/components/ui';
@@ -7,6 +8,7 @@ import {
   AuthFooterLink,
   AuthScreenLayout,
   registerSchema,
+  TurnstileCaptcha,
   useRegister,
   type RegisterValues,
 } from '@/features/auth';
@@ -15,6 +17,7 @@ import { useTranslations } from '@/i18n';
 export default function RegisterScreen() {
   const t = useTranslations();
   const register = useRegister();
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const {
     control,
@@ -25,7 +28,10 @@ export default function RegisterScreen() {
     defaultValues: { name: '', email: '', password: '', confirmPassword: '', agreement: false },
   });
 
-  const onSubmit = handleSubmit((values) => register.mutate(values));
+  const onSubmit = handleSubmit((values) => {
+    if (!captchaToken) return;
+    register.mutate({ ...values, captchaToken });
+  });
 
   return (
     <AuthScreenLayout
@@ -117,10 +123,13 @@ export default function RegisterScreen() {
         )}
       />
 
+      <TurnstileCaptcha onToken={setCaptchaToken} />
+
       <Button
         label={register.isPending ? t('auth.register.submittingButton') : t('auth.register.submitButton')}
         onPress={onSubmit}
         loading={register.isPending}
+        disabled={!captchaToken}
         fullWidth
         style={{ marginTop: 4 }}
       />
