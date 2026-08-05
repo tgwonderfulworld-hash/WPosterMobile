@@ -29,6 +29,15 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   fr: 'Français',
 };
 
+/** Flag glyphs for the language switcher UI (display-only, not translation data). */
+export const LANGUAGE_FLAGS: Record<Language, string> = {
+  en: '🇺🇸',
+  ru: '🇷🇺',
+  de: '🇩🇪',
+  es: '🇪🇸',
+  fr: '🇫🇷',
+};
+
 type Dict = Record<string, unknown>;
 
 // Static per-locale loaders (Metro needs literal require paths). Only the active

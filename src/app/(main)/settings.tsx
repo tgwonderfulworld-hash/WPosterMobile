@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Card, Chip, IconButton, PageContainer, SafeAreaContainer, Switch, Text } from '@/components/ui';
 import {
+  LANGUAGE_FLAGS,
   LANGUAGE_LABELS,
   SUPPORTED_LOCALES,
   setAppLocale,
@@ -82,7 +83,7 @@ export default function SettingsScreen() {
             {SUPPORTED_LOCALES.map((lng) => (
               <Chip
                 key={lng}
-                label={LANGUAGE_LABELS[lng]}
+                label={`${LANGUAGE_FLAGS[lng]} ${LANGUAGE_LABELS[lng]}`}
                 selected={locale === lng}
                 onPress={() => setAppLocale(lng)}
               />

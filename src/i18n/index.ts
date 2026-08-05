@@ -8,6 +8,7 @@ export {
   SUPPORTED_LOCALES,
   DEFAULT_LOCALE,
   LANGUAGE_LABELS,
+  LANGUAGE_FLAGS,
   getMessages,
   isSupportedLocale,
   resolveInitialLocale,
