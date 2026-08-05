@@ -45,5 +45,6 @@
     "editUnavailable": "La modification des publications n'est pas encore disponible dans l'application. Utilise WPoster sur le web."
   },
   "language": { "title": "Langue" },
-  "common": { "retry": "Réessayer", "loading": "Chargement…" }
+  "common": { "retry": "Réessayer", "loading": "Chargement…", "done": "Terminé" },
+  "calendar": { "filtersTitle": "Filtres" }
 }

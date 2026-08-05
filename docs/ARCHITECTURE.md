@@ -55,7 +55,7 @@ client. The `service_role` key and all server secrets must NEVER be added here.
 | Routes | `src/app` | Expo Router screens — see [ROUTING.md](ROUTING.md) |
 | UI kit | `src/components/ui` | Themed, reusable components |
 | Platform UI | `src/components/platform` | Platform icons/badges (react-native-svg) |
-| Features | `src/features/*` | `auth`, `workspace`, `dashboard` (api + hooks + components) |
+| Features | `src/features/*` | `auth`, `workspace`, `dashboard`, `calendar` (api + hooks + components) |
 | Registry | `src/lib/platforms` | Platform Registry (verbatim port of Web) |
 | Services | `src/services` | supabase, api (axios), storage, queryClient |
 | State | `src/store` | Zustand: auth, theme, app, toast |

@@ -45,5 +45,6 @@
     "editUnavailable": "Das Bearbeiten von Beiträgen ist in der App noch nicht verfügbar. Bitte nutze WPoster im Web."
   },
   "language": { "title": "Sprache" },
-  "common": { "retry": "Erneut versuchen", "loading": "Wird geladen…" }
+  "common": { "retry": "Erneut versuchen", "loading": "Wird geladen…", "done": "Fertig" },
+  "calendar": { "filtersTitle": "Filter" }
 }

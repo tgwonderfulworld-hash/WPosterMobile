@@ -3,26 +3,10 @@ import { StyleSheet, View } from 'react-native';
 
 import { PlatformBadge } from '@/components/platform';
 import { Badge, Card, Text } from '@/components/ui';
-import type { BadgeTone } from '@/components/ui';
 import type { Post } from '@/features/workspace';
+import { POST_STATUS_LABEL_KEY, POST_STATUS_TONE } from '@/features/workspace/postStatus';
 import { useFormatter, useTranslations } from '@/i18n';
 import { useTheme } from '@/theme';
-
-const STATUS_KEY: Record<Post['publish_status'], string> = {
-  draft: 'workspace.dashboard.publishStatus.draft',
-  scheduled: 'workspace.dashboard.publishStatus.scheduled',
-  publishing: 'workspace.dashboard.publishStatus.processing',
-  published: 'workspace.dashboard.publishStatus.published',
-  failed: 'workspace.dashboard.publishStatus.failed',
-};
-
-const STATUS_TONE: Record<Post['publish_status'], BadgeTone> = {
-  draft: 'neutral',
-  scheduled: 'info',
-  publishing: 'warning',
-  published: 'success',
-  failed: 'danger',
-};
 
 export interface UpcomingPostRowProps {
   post: Post;
@@ -51,7 +35,7 @@ export function UpcomingPostRow({ post, workspaceName, workspaceIcon }: Upcoming
           <Text variant="bodyStrong" numberOfLines={1} style={{ flex: 1 }}>
             {post.title || '—'}
           </Text>
-          <Badge label={t(STATUS_KEY[post.publish_status])} tone={STATUS_TONE[post.publish_status]} />
+          <Badge label={t(POST_STATUS_LABEL_KEY[post.publish_status])} tone={POST_STATUS_TONE[post.publish_status]} />
         </View>
 
         <Text variant="caption" color="subtle">

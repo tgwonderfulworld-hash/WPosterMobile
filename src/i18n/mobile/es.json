@@ -45,5 +45,6 @@
     "editUnavailable": "Editar publicaciones aún no está disponible en la app. Usa WPoster en la web."
   },
   "language": { "title": "Idioma" },
-  "common": { "retry": "Reintentar", "loading": "Cargando…" }
+  "common": { "retry": "Reintentar", "loading": "Cargando…", "done": "Listo" },
+  "calendar": { "filtersTitle": "Filtros" }
 }

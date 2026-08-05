@@ -8,13 +8,14 @@ import { useTheme } from '@/theme';
 import { useActiveWorkspaceId, useSwitchWorkspace, useWorkspaces } from '../hooks';
 import type { Workspace } from '../types';
 
-interface WorkspaceRowProps {
+export interface WorkspaceRowProps {
   workspace: Workspace;
   active: boolean;
   onPress: () => void;
 }
 
-function WorkspaceRow({ workspace, active, onPress }: WorkspaceRowProps) {
+/** A single selectable workspace row — shared by the Dashboard switcher and the Calendar filter sheet. */
+export function WorkspaceRow({ workspace, active, onPress }: WorkspaceRowProps) {
   const theme = useTheme();
   return (
     <Pressable

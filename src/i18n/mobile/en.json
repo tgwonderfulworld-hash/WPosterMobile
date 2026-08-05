@@ -45,5 +45,6 @@
     "editUnavailable": "Editing posts isn't available in the app yet. Please use WPoster on the web."
   },
   "language": { "title": "Language" },
-  "common": { "retry": "Try again", "loading": "Loading…" }
+  "common": { "retry": "Try again", "loading": "Loading…", "done": "Done" },
+  "calendar": { "filtersTitle": "Filters" }
 }

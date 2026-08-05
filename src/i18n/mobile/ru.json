@@ -45,5 +45,6 @@
     "editUnavailable": "Редактирование публикаций пока недоступно в приложении. Используйте WPoster в браузере."
   },
   "language": { "title": "Язык" },
-  "common": { "retry": "Повторить", "loading": "Загрузка…" }
+  "common": { "retry": "Повторить", "loading": "Загрузка…", "done": "Готово" },
+  "calendar": { "filtersTitle": "Фильтры" }
 }
