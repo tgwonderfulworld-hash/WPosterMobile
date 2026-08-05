@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BottomSheet, Text } from '@/components/ui';
 import {
@@ -18,9 +19,14 @@ import { useTheme } from '@/theme';
  * Single language switcher used everywhere a locale can be changed (auth screens,
  * Settings). Reads/writes the same MMKV-persisted store as the rest of the app via
  * `useLocale()`/`setAppLocale()` — there is no separate switcher state.
+ *
+ * The trigger floats (absolute) so callers can render it as a sibling OUTSIDE any
+ * ScrollView — @gorhom/bottom-sheet measures against its nearest flex ancestor, and
+ * nesting it inside scrollable content clips/misplaces the sheet.
  */
 export function LanguageSwitcher() {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const t = useTranslations();
   const locale = useLocale();
   const [open, setOpen] = useState(false);
@@ -36,10 +42,13 @@ export function LanguageSwitcher() {
         style={[
           styles.trigger,
           {
+            top: insets.top + theme.spacing.sm,
+            right: theme.spacing.xl,
             backgroundColor: theme.colors.surface,
             borderColor: theme.colors.border,
             borderRadius: theme.radius.pill,
           },
+          theme.shadows.sm,
         ]}
       >
         <Text variant="caption">{currentFlag}</Text>
@@ -89,13 +98,14 @@ export function LanguageSwitcher() {
 
 const styles = StyleSheet.create({
   trigger: {
+    position: 'absolute',
+    zIndex: 10,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     paddingHorizontal: 12,
     paddingVertical: 7,
     borderWidth: 1,
-    alignSelf: 'flex-end',
   },
   row: {
     flexDirection: 'row',

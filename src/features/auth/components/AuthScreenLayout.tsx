@@ -27,10 +27,6 @@ export function AuthScreenLayout({
   return (
     <SafeAreaContainer>
       <PageContainer keyboardAvoiding>
-        <View style={styles.topBar}>
-          <LanguageSwitcher />
-        </View>
-
         <View style={styles.header}>
           {showBrand ? <BrandMark size={64} /> : null}
           <Text variant="heading" align="center" style={{ marginTop: theme.spacing.lg }}>
@@ -47,13 +43,16 @@ export function AuthScreenLayout({
 
         {footer ? <View style={styles.footer}>{footer}</View> : null}
       </PageContainer>
+
+      {/* Rendered outside PageContainer's ScrollView — @gorhom/bottom-sheet needs a
+          non-scrolling ancestor to measure/anchor against. */}
+      <LanguageSwitcher />
     </SafeAreaContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  topBar: { flexDirection: 'row', justifyContent: 'flex-end', paddingTop: 8 },
-  header: { alignItems: 'center', paddingTop: 16, paddingBottom: 28 },
+  header: { alignItems: 'center', paddingTop: 40, paddingBottom: 28 },
   subtitle: { marginTop: 8, maxWidth: 320 },
   form: { gap: 16 },
   footer: { marginTop: 28, alignItems: 'center' },
