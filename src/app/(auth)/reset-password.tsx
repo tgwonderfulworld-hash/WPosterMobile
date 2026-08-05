@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 
 import { Button, PasswordInput } from '@/components/ui';
 import {
@@ -9,9 +8,10 @@ import {
   useResetPassword,
   type ResetPasswordValues,
 } from '@/features/auth';
+import { useTranslations } from '@/i18n';
 
 export default function ResetPasswordScreen() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const reset = useResetPassword();
 
   const {
@@ -26,13 +26,13 @@ export default function ResetPasswordScreen() {
   const onSubmit = handleSubmit((values) => reset.mutate(values));
 
   return (
-    <AuthScreenLayout title={t('auth.reset.title')} subtitle={t('auth.reset.subtitle')}>
+    <AuthScreenLayout title={t('auth.updatePassword.title')} subtitle={t('auth.updatePassword.subtitle')}>
       <Controller
         control={control}
         name="password"
         render={({ field: { onChange, onBlur, value } }) => (
           <PasswordInput
-            label={t('common.password')}
+            label={t('mobile.fields.password')}
             autoComplete="new-password"
             value={value}
             onChangeText={onChange}
@@ -47,7 +47,7 @@ export default function ResetPasswordScreen() {
         name="confirmPassword"
         render={({ field: { onChange, onBlur, value } }) => (
           <PasswordInput
-            label={t('auth.register.confirmPlaceholder')}
+            label={t('mobile.fields.confirmPassword')}
             autoComplete="new-password"
             value={value}
             onChangeText={onChange}
@@ -58,7 +58,7 @@ export default function ResetPasswordScreen() {
       />
 
       <Button
-        label={t('auth.reset.submit')}
+        label={reset.isPending ? t('auth.updatePassword.submittingButton') : t('auth.updatePassword.submitButton')}
         onPress={onSubmit}
         loading={reset.isPending}
         fullWidth

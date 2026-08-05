@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 
 import { Button, Checkbox, Input, PasswordInput } from '@/components/ui';
 import {
@@ -11,9 +10,10 @@ import {
   useRegister,
   type RegisterValues,
 } from '@/features/auth';
+import { useTranslations } from '@/i18n';
 
 export default function RegisterScreen() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const register = useRegister();
 
   const {
@@ -33,8 +33,8 @@ export default function RegisterScreen() {
       subtitle={t('auth.register.subtitle')}
       footer={
         <AuthFooterLink
-          prompt={t('auth.register.haveAccount')}
-          action={t('auth.register.signIn')}
+          prompt={t('auth.register.switchText')}
+          action={t('auth.register.switchLink')}
           onPress={() => router.replace('/login')}
         />
       }
@@ -44,8 +44,7 @@ export default function RegisterScreen() {
         name="name"
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
-            label={t('auth.register.namePlaceholder')}
-            placeholder={t('auth.register.namePlaceholder')}
+            label={t('mobile.fields.name')}
             autoCapitalize="words"
             autoComplete="name"
             leftIcon="person-outline"
@@ -62,8 +61,7 @@ export default function RegisterScreen() {
         name="email"
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
-            label={t('common.email')}
-            placeholder={t('auth.login.emailPlaceholder')}
+            label={t('mobile.fields.email')}
             keyboardType="email-address"
             autoCapitalize="none"
             autoComplete="email"
@@ -81,8 +79,7 @@ export default function RegisterScreen() {
         name="password"
         render={({ field: { onChange, onBlur, value } }) => (
           <PasswordInput
-            label={t('common.password')}
-            placeholder={t('auth.login.passwordPlaceholder')}
+            label={t('mobile.fields.password')}
             autoComplete="new-password"
             value={value}
             onChangeText={onChange}
@@ -97,8 +94,7 @@ export default function RegisterScreen() {
         name="confirmPassword"
         render={({ field: { onChange, onBlur, value } }) => (
           <PasswordInput
-            label={t('auth.register.confirmPlaceholder')}
-            placeholder={t('auth.register.confirmPlaceholder')}
+            label={t('mobile.fields.confirmPassword')}
             autoComplete="new-password"
             value={value}
             onChangeText={onChange}
@@ -115,14 +111,14 @@ export default function RegisterScreen() {
           <Checkbox
             checked={value}
             onChange={onChange}
-            label={t('auth.register.agreement')}
+            label={t('mobile.fields.agreement')}
             error={!!errors.agreement}
           />
         )}
       />
 
       <Button
-        label={t('auth.register.submit')}
+        label={register.isPending ? t('auth.register.submittingButton') : t('auth.register.submitButton')}
         onPress={onSubmit}
         loading={register.isPending}
         fullWidth

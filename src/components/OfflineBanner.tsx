@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useTranslations } from '@/i18n';
 import { useAppStore } from '@/store';
 import { useTheme } from '@/theme';
 
@@ -14,7 +14,7 @@ export function OfflineBanner() {
   const isOnline = useAppStore((s) => s.isOnline);
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   if (isOnline) return null;
 
@@ -28,7 +28,7 @@ export function OfflineBanner() {
       <View style={styles.row}>
         <Ionicons name="cloud-offline-outline" size={16} color={theme.colors.background} />
         <Text variant="caption" style={{ color: theme.colors.background }}>
-          {t('offline.banner')}
+          {t('mobile.offline.banner')}
         </Text>
       </View>
     </Animated.View>

@@ -20,10 +20,11 @@ const spacing = {
 };
 
 /** Border-radius scale. Matches the spec: small, medium, large, xl, pill. */
+// Matches WPoster Web: --radius-sm 12 (medium), --radius 24 (xl), cards 16 (large).
 const radius = {
   none: 0,
-  small: 6,
-  medium: 10,
+  small: 8,
+  medium: 12,
   large: 16,
   xl: 24,
   pill: 999,

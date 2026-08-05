@@ -7,10 +7,12 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { zustandMmkvStorage } from '@/services/storage';
 
-export type Language = 'en' | 'ru';
+/** Supported languages — mirrors WPoster Web (src/i18n/routing.ts). */
+export type Language = 'en' | 'ru' | 'de' | 'es' | 'fr';
 
 interface AppState {
-  language: Language;
+  /** null until the user picks one → first launch follows the device language. */
+  language: Language | null;
   notificationsEnabled: boolean;
   /** Live connectivity (updated by the NetInfo listener). Not persisted. */
   isOnline: boolean;
@@ -22,7 +24,7 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
-      language: 'en',
+      language: null,
       notificationsEnabled: true,
       isOnline: true,
       setLanguage: (language) => set({ language }),

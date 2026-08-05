@@ -43,10 +43,10 @@ export class AppError extends Error {
     fields?: FieldError[];
     cause?: unknown;
   }) {
-    super(init.messageKey ?? `errors.${init.kind}`);
+    super(init.messageKey ?? `mobile.net.${init.kind}`);
     this.name = 'AppError';
     this.kind = init.kind;
-    this.messageKey = init.messageKey ?? `errors.${init.kind}`;
+    this.messageKey = init.messageKey ?? `mobile.net.${init.kind}`;
     this.status = init.status;
     this.code = init.code;
     this.fields = init.fields;
@@ -94,22 +94,22 @@ function supabaseMessageKey(err: SupabaseLikeError): { kind: AppErrorKind; messa
   const msg = err.message?.toLowerCase() ?? '';
 
   if (code === 'invalid_credentials' || msg.includes('invalid login credentials')) {
-    return { kind: 'unauthorized', messageKey: 'errors.auth.invalidCredentials' };
+    return { kind: 'unauthorized', messageKey: 'mobile.authErrors.invalidCredentials' };
   }
   if (code === 'email_not_confirmed' || msg.includes('email not confirmed')) {
-    return { kind: 'forbidden', messageKey: 'errors.auth.emailNotConfirmed' };
+    return { kind: 'forbidden', messageKey: 'mobile.authErrors.emailNotConfirmed' };
   }
   if (code === 'user_already_exists' || msg.includes('already registered')) {
-    return { kind: 'validation', messageKey: 'errors.auth.emailTaken' };
+    return { kind: 'validation', messageKey: 'mobile.authErrors.emailTaken' };
   }
   if (code === 'weak_password' || msg.includes('password should be')) {
-    return { kind: 'validation', messageKey: 'errors.auth.weakPassword' };
+    return { kind: 'validation', messageKey: 'mobile.authErrors.weakPassword' };
   }
   if (code === 'over_email_send_rate_limit' || err.status === 429) {
-    return { kind: 'rateLimited', messageKey: 'errors.rateLimited' };
+    return { kind: 'rateLimited', messageKey: 'mobile.net.rateLimited' };
   }
   const kind = err.status ? kindFromStatus(err.status) : 'unknown';
-  return { kind, messageKey: `errors.${kind}` };
+  return { kind, messageKey: `mobile.net.${kind}` };
 }
 
 /** Convert any thrown value into a normalized AppError. */

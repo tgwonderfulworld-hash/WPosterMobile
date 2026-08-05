@@ -43,7 +43,7 @@ export function useRegister() {
       // With email confirmation enabled, there's no session yet — send the user
       // to the verify-email screen. Otherwise the guard will route to the app.
       if (!data.session) {
-        toast.success('auth.register.success');
+        toast.success('auth.register.checkEmailTitle');
         router.push({ pathname: '/verify-email', params: { email: variables.email } });
       }
     },
@@ -54,7 +54,7 @@ export function useRegister() {
 export function useForgotPassword() {
   return useMutation({
     mutationFn: (values: ForgotPasswordValues) => authApi.sendPasswordReset(values.email),
-    onSuccess: () => toast.success('auth.forgot.sent'),
+    onSuccess: () => toast.success('mobile.notices.resetLinkSent'),
     onError: notifyError,
   });
 }
@@ -63,7 +63,7 @@ export function useResetPassword() {
   return useMutation({
     mutationFn: (values: ResetPasswordValues) => authApi.updatePassword(values.password),
     onSuccess: () => {
-      toast.success('auth.reset.success');
+      toast.success('mobile.notices.passwordUpdated');
       router.replace('/login');
     },
     onError: notifyError,
@@ -73,7 +73,7 @@ export function useResetPassword() {
 export function useResendVerification() {
   return useMutation({
     mutationFn: (email: string) => authApi.resendVerification(email),
-    onSuccess: () => toast.success('auth.verify.resent'),
+    onSuccess: () => toast.success('auth.register.resendSuccess'),
     onError: notifyError,
   });
 }

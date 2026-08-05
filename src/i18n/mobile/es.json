@@ -1,0 +1,44 @@
+{
+  "fields": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "name": "Nombre",
+    "confirmPassword": "Confirmar contraseña",
+    "rememberMe": "Recordarme",
+    "agreement": "Acepto las Condiciones del servicio y la Política de privacidad"
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "email": "Introduce un correo electrónico válido",
+    "passwordMin": "La contraseña debe tener al menos 8 caracteres",
+    "passwordComplexity": "Incluye mayúsculas, minúsculas y un número",
+    "passwordsMismatch": "Las contraseñas no coinciden",
+    "agreementRequired": "Acepta los términos para continuar"
+  },
+  "offline": { "banner": "Sin conexión a internet", "restored": "De nuevo en línea" },
+  "net": {
+    "network": "Sin conexión a internet. Revisa tu red e inténtalo de nuevo.",
+    "timeout": "La solicitud tardó demasiado. Inténtalo de nuevo.",
+    "unauthorized": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+    "forbidden": "No tienes permiso para hacer eso.",
+    "notFound": "No pudimos encontrar lo que buscabas.",
+    "validation": "Revisa los datos e inténtalo de nuevo.",
+    "rateLimited": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+    "server": "Algo salió mal de nuestro lado. Inténtalo de nuevo en breve.",
+    "unknown": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "authErrors": {
+    "invalidCredentials": "Correo o contraseña incorrectos.",
+    "emailNotConfirmed": "Verifica tu correo antes de iniciar sesión.",
+    "emailTaken": "Ya existe una cuenta con este correo.",
+    "weakPassword": "Elige una contraseña más segura."
+  },
+  "session": { "loading": "Preparando tu espacio de trabajo…" },
+  "notices": {
+    "resetLinkSent": "Si ese correo existe, el enlace ya va en camino.",
+    "passwordUpdated": "Tu contraseña se ha actualizado."
+  },
+  "workspaceSwitcher": { "title": "Cambiar de espacio", "empty": "Aún no hay espacios de trabajo" },
+  "language": { "title": "Idioma" },
+  "common": { "retry": "Reintentar", "loading": "Cargando…" }
+}

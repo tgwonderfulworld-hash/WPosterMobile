@@ -1,0 +1,44 @@
+{
+  "fields": {
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "name": "Nom",
+    "confirmPassword": "Confirmer le mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "agreement": "J'accepte les Conditions d'utilisation et la Politique de confidentialité"
+  },
+  "validation": {
+    "required": "Ce champ est obligatoire",
+    "email": "Saisis une adresse e-mail valide",
+    "passwordMin": "Le mot de passe doit comporter au moins 8 caractères",
+    "passwordComplexity": "Inclus des majuscules, des minuscules et un chiffre",
+    "passwordsMismatch": "Les mots de passe ne correspondent pas",
+    "agreementRequired": "Accepte les conditions pour continuer"
+  },
+  "offline": { "banner": "Pas de connexion internet", "restored": "De nouveau en ligne" },
+  "net": {
+    "network": "Pas de connexion internet. Vérifie ton réseau et réessaie.",
+    "timeout": "La requête a pris trop de temps. Réessaie.",
+    "unauthorized": "Ta session a expiré. Reconnecte-toi.",
+    "forbidden": "Tu n'as pas la permission de faire cela.",
+    "notFound": "Nous n'avons pas trouvé ce que tu cherchais.",
+    "validation": "Vérifie les informations et réessaie.",
+    "rateLimited": "Trop de tentatives. Patiente un instant et réessaie.",
+    "server": "Un problème est survenu de notre côté. Réessaie bientôt.",
+    "unknown": "Un problème est survenu. Réessaie."
+  },
+  "authErrors": {
+    "invalidCredentials": "E-mail ou mot de passe incorrect.",
+    "emailNotConfirmed": "Vérifie ton e-mail avant de te connecter.",
+    "emailTaken": "Un compte avec cet e-mail existe déjà.",
+    "weakPassword": "Choisis un mot de passe plus robuste."
+  },
+  "session": { "loading": "Préparation de ton espace de travail…" },
+  "notices": {
+    "resetLinkSent": "Si cet e-mail existe, un lien est en route.",
+    "passwordUpdated": "Ton mot de passe a été mis à jour."
+  },
+  "workspaceSwitcher": { "title": "Changer d'espace", "empty": "Aucun espace de travail" },
+  "language": { "title": "Langue" },
+  "common": { "retry": "Réessayer", "loading": "Chargement…" }
+}

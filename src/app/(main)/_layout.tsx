@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Redirect } from 'expo-router';
 import { Tabs } from 'expo-router/js-tabs';
-import { useTranslation } from 'react-i18next';
 import type { ColorValue } from 'react-native';
 
+import { useTranslations } from '@/i18n';
 import { useAuthStore } from '@/store';
 import { useTheme } from '@/theme';
 
@@ -28,7 +28,7 @@ function icon(name: IoniconName, focusedName: IoniconName) {
 export default function MainLayout() {
   const status = useAuthStore((s) => s.status);
   const theme = useTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   if (status === 'loading') return null;
   if (status !== 'authenticated') return <Redirect href="/(auth)/login" />;
@@ -48,21 +48,22 @@ export default function MainLayout() {
     >
       <Tabs.Screen
         name="dashboard"
-        options={{ title: t('tabs.dashboard'), tabBarIcon: icon('grid-outline', 'grid') }}
+        options={{ title: t('workspace.sidebar.dashboard'), tabBarIcon: icon('grid-outline', 'grid') }}
       />
       <Tabs.Screen
         name="calendar"
-        options={{ title: t('tabs.calendar'), tabBarIcon: icon('calendar-outline', 'calendar') }}
+        options={{ title: t('workspace.sidebar.calendar'), tabBarIcon: icon('calendar-outline', 'calendar') }}
       />
       <Tabs.Screen
         name="analytics"
-        options={{ title: t('tabs.analytics'), tabBarIcon: icon('stats-chart-outline', 'stats-chart') }}
+        options={{ title: t('workspace.sidebar.analytics'), tabBarIcon: icon('stats-chart-outline', 'stats-chart') }}
       />
       <Tabs.Screen
         name="profile"
-        options={{ title: t('tabs.profile'), tabBarIcon: icon('person-outline', 'person') }}
+        options={{ title: t('workspace.sidebar.profile'), tabBarIcon: icon('person-outline', 'person') }}
       />
       <Tabs.Screen name="settings" options={{ href: null }} />
+      <Tabs.Screen name="connected-accounts" options={{ href: null }} />
     </Tabs>
   );
 }

@@ -1,10 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useTranslations } from '@/i18n';
 import { useToastStore, type ToastItem, type ToastVariant } from '@/store';
 import { useTheme, type Theme } from '@/theme';
 
@@ -23,7 +23,7 @@ function variantStyle(theme: Theme, variant: ToastVariant) {
 
 function ToastRow({ item }: { item: ToastItem }) {
   const theme = useTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
   const dismiss = useToastStore((s) => s.dismiss);
   const s = variantStyle(theme, item.variant);
 

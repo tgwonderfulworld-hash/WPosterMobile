@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { router } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
 
 import { Alert, Button, Input } from '@/components/ui';
 import {
@@ -11,9 +10,10 @@ import {
   useForgotPassword,
   type ForgotPasswordValues,
 } from '@/features/auth';
+import { useTranslations } from '@/i18n';
 
 export default function ForgotPasswordScreen() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const forgot = useForgotPassword();
 
   const {
@@ -29,25 +29,24 @@ export default function ForgotPasswordScreen() {
 
   return (
     <AuthScreenLayout
-      title={t('auth.forgot.title')}
-      subtitle={t('auth.forgot.subtitle')}
+      title={t('auth.forgotPassword.title')}
+      subtitle={t('auth.forgotPassword.subtitle')}
       footer={
         <AuthFooterLink
-          prompt=""
-          action={t('auth.forgot.backToLogin')}
+          prompt={t('auth.forgotPassword.switchText')}
+          action={t('auth.forgotPassword.switchLink')}
           onPress={() => router.replace('/login')}
         />
       }
     >
-      {forgot.isSuccess ? <Alert tone="success" message={t('auth.forgot.sent')} /> : null}
+      {forgot.isSuccess ? <Alert tone="success" message={t('mobile.notices.resetLinkSent')} /> : null}
 
       <Controller
         control={control}
         name="email"
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
-            label={t('common.email')}
-            placeholder={t('auth.login.emailPlaceholder')}
+            label={t('mobile.fields.email')}
             keyboardType="email-address"
             autoCapitalize="none"
             autoComplete="email"
@@ -61,7 +60,7 @@ export default function ForgotPasswordScreen() {
       />
 
       <Button
-        label={t('auth.forgot.submit')}
+        label={forgot.isPending ? t('auth.forgotPassword.submittingButton') : t('auth.forgotPassword.submitButton')}
         onPress={onSubmit}
         loading={forgot.isPending}
         fullWidth

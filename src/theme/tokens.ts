@@ -59,72 +59,78 @@ export interface ThemeColors {
   overlay: string;
 }
 
-const light: ThemeColors = {
-  primary: '#2F6BF6',
-  primaryHover: '#2559D8',
-  primaryPressed: '#1E49B8',
-  primaryForeground: '#FFFFFF',
-  primarySubtle: '#EAF0FE',
-  accent: '#7C3AED',
-  accentSubtle: '#F1EAFE',
+// ── Values mirror WPoster Web's design tokens (src/app/globals.css). Web is
+// dark-first; `--app-*` variables map onto these semantic roles 1:1 so Mobile
+// and Web render the same palette. Do not diverge — sync any change from Web.
 
-  background: '#FFFFFF',
-  surface: '#F5F7FA',
-  card: '#FFFFFF',
-  border: '#E4E7EC',
-  borderStrong: '#D0D5DD',
-  foreground: '#101828',
-  muted: '#475467',
-  subtle: '#98A2B3',
+// Light theme = Web `[data-theme-app=light]`.
+const light: ThemeColors = {
+  primary: '#3B82F6',
+  primaryHover: '#2563EB',
+  primaryPressed: '#1D4ED8',
+  primaryForeground: '#FFFFFF',
+  primarySubtle: 'rgba(59, 130, 246, 0.10)',
+  accent: '#7C3AED',
+  accentSubtle: 'rgba(124, 58, 237, 0.10)',
+
+  background: '#E4EBF5', // --app-bg
+  surface: '#F0F4FF', // --app-surface-ink (raised sections / inputs)
+  card: '#FFFFFF', // --app-surface
+  border: 'rgba(59, 130, 246, 0.16)', // --app-border
+  borderStrong: 'rgba(59, 130, 246, 0.28)',
+  foreground: '#0F172A', // --app-text-primary
+  muted: '#475569', // --app-text-secondary
+  subtle: '#64748B', // --app-text-muted
+  inverse: '#0B0F19',
+
+  success: '#22C55E', // --app-ok
+  successSubtle: 'rgba(34, 197, 94, 0.12)',
+  warning: '#F59E0B', // --app-warn
+  warningSubtle: 'rgba(245, 158, 11, 0.12)',
+  danger: '#EF4444', // --app-err
+  dangerSubtle: 'rgba(239, 68, 68, 0.10)',
+  info: '#3B82F6',
+  infoSubtle: 'rgba(59, 130, 246, 0.08)',
+
+  overlay: 'rgba(15, 23, 42, 0.45)',
+};
+
+// Dark theme = Web `:root` (default).
+const dark: ThemeColors = {
+  primary: '#3B82F6', // --app-primary / --app-accent
+  primaryHover: '#60A5FA',
+  primaryPressed: '#2563EB',
+  primaryForeground: '#FFFFFF',
+  primarySubtle: 'rgba(59, 130, 246, 0.12)', // --app-accent-bg
+  accent: '#7C3AED',
+  accentSubtle: 'rgba(124, 58, 237, 0.16)',
+
+  background: '#0B0F19', // --app-bg
+  surface: '#1A2130', // raised (approx --app-surface-raised over --app-surface)
+  card: '#111827', // --app-surface
+  border: 'rgba(255, 255, 255, 0.08)', // --app-border
+  borderStrong: 'rgba(255, 255, 255, 0.14)',
+  foreground: '#FFFFFF', // --app-text-primary
+  muted: 'rgba(255, 255, 255, 0.60)', // --app-text-secondary
+  subtle: 'rgba(255, 255, 255, 0.38)', // --app-text-muted
   inverse: '#FFFFFF',
 
-  success: '#16A34A',
-  successSubtle: '#E7F6EC',
-  warning: '#D97706',
-  warningSubtle: '#FDF1E3',
-  danger: '#DC2626',
-  dangerSubtle: '#FDECEC',
-  info: '#2F6BF6',
-  infoSubtle: '#EAF0FE',
+  success: '#22C55E',
+  successSubtle: 'rgba(34, 197, 94, 0.14)',
+  warning: '#F59E0B',
+  warningSubtle: 'rgba(245, 158, 11, 0.14)',
+  danger: '#EF4444',
+  dangerSubtle: 'rgba(239, 68, 68, 0.14)',
+  info: '#3B82F6',
+  infoSubtle: 'rgba(59, 130, 246, 0.12)',
 
-  overlay: 'rgba(16, 24, 40, 0.55)',
+  overlay: 'rgba(3, 7, 18, 0.70)',
 };
 
-const dark: ThemeColors = {
-  primary: '#4F7DF3',
-  primaryHover: '#6B93F6',
-  primaryPressed: '#3E68D8',
-  primaryForeground: '#FFFFFF',
-  primarySubtle: '#17213A',
-  accent: '#9B6BF0',
-  accentSubtle: '#241B3A',
-
-  background: '#0B0E14',
-  surface: '#12151D',
-  card: '#171A22',
-  border: '#262A34',
-  borderStrong: '#363B47',
-  foreground: '#F2F4F7',
-  muted: '#98A2B3',
-  subtle: '#667085',
-  inverse: '#0B0E14',
-
-  success: '#34D399',
-  successSubtle: '#12271E',
-  warning: '#FBBF24',
-  warningSubtle: '#2A2213',
-  danger: '#F87171',
-  dangerSubtle: '#2C1717',
-  info: '#60A5FA',
-  infoSubtle: '#14243A',
-
-  overlay: 'rgba(0, 0, 0, 0.65)',
-};
-
-/** Brand gradient stops (blue → indigo → violet) for splash/hero surfaces. */
+/** Brand gradient (Web `--grad`): blue → indigo → violet, 135deg. */
 export const gradients = {
-  brand: ['#2F6BF6', '#5B4BE8', '#7C3AED'] as const,
-  brandSubtle: ['#EAF0FE', '#F1EAFE'] as const,
+  brand: ['#3B82F6', '#4F46E5', '#7C3AED'] as const,
+  brandSubtle: ['rgba(59,130,246,0.12)', 'rgba(124,58,237,0.12)'] as const,
 };
 
 export const spacing = scale.spacing;

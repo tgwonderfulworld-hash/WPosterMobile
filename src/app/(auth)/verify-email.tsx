@@ -1,34 +1,48 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useTranslation } from 'react-i18next';
 
-import { Button } from '@/components/ui';
+import { Button, Text } from '@/components/ui';
 import { AuthFooterLink, AuthScreenLayout, useResendVerification } from '@/features/auth';
+import { useTranslations } from '@/i18n';
 
 export default function VerifyEmailScreen() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { email } = useLocalSearchParams<{ email?: string }>();
   const resend = useResendVerification();
 
   return (
     <AuthScreenLayout
-      title={t('auth.verify.title')}
-      subtitle={t('auth.verify.subtitle', { email: email ?? t('common.email').toLowerCase() })}
+      title={t('auth.register.checkEmailTitle')}
+      subtitle={t('auth.register.checkEmailDesc')}
       footer={
         <AuthFooterLink
           prompt=""
-          action={t('auth.verify.backToLogin')}
+          action={t('auth.forgotPassword.switchLink')}
           onPress={() => router.replace('/login')}
         />
       }
     >
+      {email ? (
+        <Text variant="subtitle" align="center">
+          {email}
+        </Text>
+      ) : null}
+
+      <Text variant="small" color="muted" align="center">
+        {t('auth.register.checkEmailHelp')}
+      </Text>
+
       <Button
-        label={t('auth.verify.resend')}
+        label={t('auth.register.resendButton')}
         variant="secondary"
         onPress={() => email && resend.mutate(email)}
         loading={resend.isPending}
         disabled={!email}
         fullWidth
       />
+
+      <Text variant="caption" color="subtle" align="center">
+        {t('auth.register.spamHint')}
+      </Text>
     </AuthScreenLayout>
   );
 }

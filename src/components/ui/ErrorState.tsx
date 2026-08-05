@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
+import { useTranslations } from '@/i18n';
 import { AppError } from '@/utils/errors';
 import { useTheme } from '@/theme';
 
@@ -16,10 +16,10 @@ export interface ErrorStateProps {
 
 export function ErrorState({ error, onRetry }: ErrorStateProps) {
   const theme = useTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   const message =
-    error instanceof AppError ? t(error.messageKey) : (error ?? t('states.errorBody'));
+    error instanceof AppError ? t(error.messageKey) : (error ?? t('errors.couldNotLoadData'));
 
   return (
     <View style={styles.container}>
@@ -27,12 +27,14 @@ export function ErrorState({ error, onRetry }: ErrorStateProps) {
         <Ionicons name="cloud-offline-outline" size={30} color={theme.colors.danger} />
       </View>
       <Text variant="subtitle" align="center">
-        {t('states.errorTitle')}
+        {t('errors.somethingWentWrong')}
       </Text>
       <Text variant="body" color="muted" align="center" style={styles.body}>
         {message}
       </Text>
-      {onRetry ? <Button label={t('common.retry')} onPress={onRetry} style={styles.action} /> : null}
+      {onRetry ? (
+        <Button label={t('mobile.common.retry')} onPress={onRetry} style={styles.action} />
+      ) : null}
     </View>
   );
 }

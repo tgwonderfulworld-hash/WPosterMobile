@@ -1,0 +1,44 @@
+{
+  "fields": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "confirmPassword": "Confirm password",
+    "rememberMe": "Remember me",
+    "agreement": "I agree to the Terms of Service and Privacy Policy"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid email address",
+    "passwordMin": "Password must be at least 8 characters",
+    "passwordComplexity": "Include upper- and lower-case letters and a number",
+    "passwordsMismatch": "Passwords don't match",
+    "agreementRequired": "Please accept the terms to continue"
+  },
+  "offline": { "banner": "No internet connection", "restored": "Back online" },
+  "net": {
+    "network": "No internet connection. Check your network and try again.",
+    "timeout": "The request took too long. Please try again.",
+    "unauthorized": "Your session has expired. Please sign in again.",
+    "forbidden": "You don't have permission to do that.",
+    "notFound": "We couldn't find what you were looking for.",
+    "validation": "Please check the details and try again.",
+    "rateLimited": "Too many attempts. Please wait a moment and try again.",
+    "server": "Something went wrong on our side. Please try again shortly.",
+    "unknown": "Something went wrong. Please try again."
+  },
+  "authErrors": {
+    "invalidCredentials": "Incorrect email or password.",
+    "emailNotConfirmed": "Please verify your email before signing in.",
+    "emailTaken": "An account with this email already exists.",
+    "weakPassword": "Please choose a stronger password."
+  },
+  "session": { "loading": "Preparing your workspace…" },
+  "notices": {
+    "resetLinkSent": "If that email exists, a reset link is on its way.",
+    "passwordUpdated": "Your password has been updated."
+  },
+  "workspaceSwitcher": { "title": "Switch workspace", "empty": "No workspaces yet" },
+  "language": { "title": "Language" },
+  "common": { "retry": "Try again", "loading": "Loading…" }
+}

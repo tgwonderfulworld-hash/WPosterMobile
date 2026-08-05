@@ -1,5 +1,3 @@
-import '@/i18n';
-
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Stack, ThemeProvider as NavigationThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -11,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { OfflineBanner } from '@/components/OfflineBanner';
 import { ToastHost } from '@/components/ui';
 import { useAuthBootstrap } from '@/features/auth';
+import { AppIntlProvider } from '@/i18n';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { queryClient } from '@/services/queryClient';
 import { ThemeProvider, toNavigationTheme, useTheme } from '@/theme';
@@ -52,7 +51,9 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
-            <RootNavigator />
+            <AppIntlProvider>
+              <RootNavigator />
+            </AppIntlProvider>
           </ThemeProvider>
         </QueryClientProvider>
       </SafeAreaProvider>
