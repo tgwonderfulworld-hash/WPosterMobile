@@ -1,6 +1,10 @@
 /**
  * Primary action button. Supports variants, sizes, loading and disabled states,
  * optional leading/trailing icons and full-width layout. Colors come from theme.
+ *
+ * NOTE: uses an ARRAY style (not a `style={({pressed}) => ...}` function). Under
+ * NativeWind's JSX interop (jsxImportSource) a function `style` on Pressable is
+ * dropped, so we style with an array and use `android_ripple` for press feedback.
  */
 import { Ionicons } from '@expo/vector-icons';
 import {
@@ -36,19 +40,19 @@ const SIZE: Record<ButtonSize, { height: number; paddingH: number; font: 'button
   lg: { height: 56, paddingH: 22, font: 'button' },
 };
 
-function palette(theme: Theme, variant: ButtonVariant, pressed: boolean) {
+function palette(theme: Theme, variant: ButtonVariant) {
   const c = theme.colors;
   switch (variant) {
     case 'primary':
-      return { bg: pressed ? c.primaryPressed : c.primary, fg: c.primaryForeground, border: 'transparent' };
+      return { bg: c.primary, fg: c.primaryForeground, border: 'transparent' };
     case 'danger':
-      return { bg: pressed ? c.primaryPressed : c.danger, fg: c.primaryForeground, border: 'transparent' };
+      return { bg: c.danger, fg: c.primaryForeground, border: 'transparent' };
     case 'secondary':
-      return { bg: pressed ? c.borderStrong : c.surface, fg: c.foreground, border: 'transparent' };
+      return { bg: c.surface, fg: c.foreground, border: 'transparent' };
     case 'outline':
-      return { bg: pressed ? c.surface : 'transparent', fg: c.foreground, border: c.borderStrong };
+      return { bg: 'transparent', fg: c.foreground, border: c.borderStrong };
     case 'ghost':
-      return { bg: pressed ? c.surface : 'transparent', fg: c.primary, border: 'transparent' };
+      return { bg: 'transparent', fg: c.primary, border: 'transparent' };
   }
 }
 
@@ -67,49 +71,47 @@ export function Button({
   const theme = useTheme();
   const dims = SIZE[size];
   const isDisabled = disabled || loading;
+  const p = palette(theme, variant);
+  const rippleColor = variant === 'primary' || variant === 'danger' ? 'rgba(255,255,255,0.20)' : theme.colors.primarySubtle;
 
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled: isDisabled, busy: loading }}
       disabled={isDisabled}
-      style={({ pressed }) => {
-        const p = palette(theme, variant, pressed);
-        return [
-          styles.base,
-          {
-            height: dims.height,
-            paddingHorizontal: dims.paddingH,
-            borderRadius: theme.radius.medium,
-            backgroundColor: p.bg,
-            borderColor: p.border,
-            borderWidth: variant === 'outline' ? StyleSheet.hairlineWidth * 2 : 0,
-            opacity: isDisabled ? 0.5 : 1,
-            alignSelf: fullWidth ? 'stretch' : 'flex-start',
-          },
-          style,
-        ];
-      }}
+      android_ripple={{ color: rippleColor }}
+      style={[
+        styles.base,
+        {
+          height: dims.height,
+          paddingHorizontal: dims.paddingH,
+          borderRadius: theme.radius.medium,
+          backgroundColor: p.bg,
+          borderColor: p.border,
+          borderWidth: variant === 'outline' ? StyleSheet.hairlineWidth * 2 : 0,
+          opacity: isDisabled ? 0.5 : 1,
+          alignSelf: fullWidth ? 'stretch' : 'flex-start',
+        },
+        style,
+      ]}
       {...rest}
     >
-      {({ pressed }) => {
-        const p = palette(theme, variant, pressed);
-        if (loading) return <ActivityIndicator color={p.fg} />;
-        return (
-          <View style={styles.content}>
-            {leftIcon ? <Ionicons name={leftIcon} size={18} color={p.fg} /> : null}
-            <Text variant={dims.font} style={{ color: p.fg }}>
-              {label}
-            </Text>
-            {rightIcon ? <Ionicons name={rightIcon} size={18} color={p.fg} /> : null}
-          </View>
-        );
-      }}
+      {loading ? (
+        <ActivityIndicator color={p.fg} />
+      ) : (
+        <View style={styles.content}>
+          {leftIcon ? <Ionicons name={leftIcon} size={18} color={p.fg} /> : null}
+          <Text variant={dims.font} style={{ color: p.fg }}>
+            {label}
+          </Text>
+          {rightIcon ? <Ionicons name={rightIcon} size={18} color={p.fg} /> : null}
+        </View>
+      )}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  base: { alignItems: 'center', justifyContent: 'center' },
+  base: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   content: { flexDirection: 'row', alignItems: 'center', gap: 8 },
 });

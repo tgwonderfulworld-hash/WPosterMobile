@@ -22,6 +22,8 @@ const DIM: Record<IconButtonSize, { box: number; icon: number }> = {
   lg: { box: 52, icon: 26 },
 };
 
+// Array style (not a function) so NativeWind's JSX interop keeps it; ripple gives
+// press feedback. See Button.tsx for the rationale.
 export function IconButton({
   icon,
   onPress,
@@ -34,6 +36,7 @@ export function IconButton({
   const theme = useTheme();
   const dim = DIM[size];
   const c = theme.colors;
+  const bg = variant === 'solid' ? c.primary : variant === 'soft' ? c.primarySubtle : 'transparent';
 
   return (
     <Pressable
@@ -42,21 +45,15 @@ export function IconButton({
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
+      android_ripple={{ color: c.primarySubtle, radius: dim.box / 2, borderless: true }}
+      style={[
         styles.base,
         {
           width: dim.box,
           height: dim.box,
           borderRadius: theme.radius.medium,
           opacity: disabled ? 0.5 : 1,
-          backgroundColor:
-            variant === 'solid'
-              ? c.primary
-              : variant === 'soft'
-                ? c.primarySubtle
-                : pressed
-                  ? c.surface
-                  : 'transparent',
+          backgroundColor: bg,
         },
         style,
       ]}
@@ -71,5 +68,5 @@ export function IconButton({
 }
 
 const styles = StyleSheet.create({
-  base: { alignItems: 'center', justifyContent: 'center' },
+  base: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
 });

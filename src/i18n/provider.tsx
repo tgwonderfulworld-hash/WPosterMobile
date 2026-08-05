@@ -11,7 +11,7 @@ import { IntlProvider } from 'use-intl';
 
 import { useAppStore } from '@/store';
 
-import { getMessages, onIntlError, resolveInitialLocale } from './index';
+import { getMessages, onIntlError, resolveInitialLocale } from './loader';
 
 const deviceTimeZone = getCalendars()[0]?.timeZone ?? 'UTC';
 

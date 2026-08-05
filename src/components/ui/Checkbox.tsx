@@ -53,5 +53,7 @@ export function Checkbox({ checked, onChange, label, disabled = false, error = f
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   box: { width: 22, height: 22, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
-  label: { flex: 1 },
+  // flexShrink (not flex:1) so the label wraps long text when full-width but does
+  // not greedily expand and push siblings off-screen when placed inline in a row.
+  label: { flexShrink: 1 },
 });

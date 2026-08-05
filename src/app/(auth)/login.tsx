@@ -68,7 +68,7 @@ export default function LoginScreen() {
         )}
       />
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <Controller
           control={control}
           name="remember"
@@ -76,8 +76,8 @@ export default function LoginScreen() {
             <Checkbox checked={value} onChange={onChange} label={t('mobile.fields.rememberMe')} />
           )}
         />
-        <Pressable onPress={() => router.push('/forgot-password')} hitSlop={8}>
-          <Text variant="bodyStrong" style={{ color: theme.colors.primary }}>
+        <Pressable onPress={() => router.push('/forgot-password')} hitSlop={8} style={{ flexShrink: 0 }}>
+          <Text variant="bodyStrong" numberOfLines={1} style={{ color: theme.colors.primary }}>
             {t('auth.login.forgotPasswordLink')}
           </Text>
         </Pressable>
